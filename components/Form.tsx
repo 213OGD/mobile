@@ -6,9 +6,9 @@ export default class Form extends Component {
     return (
       <View style={styles.container}>
         <Text style={styles.paragraph}>
-          Local files and assets can be imported by dragging and dropping them into the editor
+          Ceci est une page Test
         </Text>
-        <Image style={styles.logo} source={{ uri: 'https://reactnative.dev/img/tiny_logo.png' }}/>
+        <Image style={styles.logo} source={{ uri: 'https://media-cdn.tripadvisor.com/media/photo-s/1a/9f/23/91/coming-soon-in-doha-barber.jpg' }} />
       </View>
     );
   }
@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
   },
   logo: {
     backgroundColor: "#056ecf",
-    height: 128,
-    width: 128,
+    height: 500,
+    width: 600,
   }
 });
