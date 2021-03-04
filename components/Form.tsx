@@ -16,6 +16,7 @@ export default class Form extends Component {
 
 const styles = StyleSheet.create({
   container: {
+    paddingTop: 50,
     alignItems: 'center',
     justifyContent: 'center',
   },

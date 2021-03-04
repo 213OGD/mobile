@@ -6,19 +6,31 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 import Home from "./components/Home";
 import Form from "./components/Form";
+import List from "./components/List";
 
 
 const Tab = createBottomTabNavigator();
 
 export default function App() {
   return (
-    <NavigationContainer>
-      <Tab.Navigator>
-        <Tab.Screen name="Home" component={Home} />
-        <Tab.Screen name="Form" component={Form} />
-      </Tab.Navigator>
+    <NavigationContainer style={styles.nav}>
+      
+        <Tab.Navigator >
+          <Tab.Screen  name="Home" component={Home} />
+          <Tab.Screen name="Test" component={Form} />
+          <Tab.Screen name="List" component={List} />
+        </Tab.Navigator>
+      
     </NavigationContainer>
   );
 }
 
-
+const styles = StyleSheet.create({
+  nav : {
+    flex: 1,
+    backgroundColor: "red",
+    alignItems: "center",
+    justifyContent: "center",
+    color: "red",
+  },
+});

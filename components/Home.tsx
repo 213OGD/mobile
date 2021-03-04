@@ -3,6 +3,7 @@ import React, { constructor } from 'react';
 import { TextInput, ImageBackground, StyleSheet, Text, View, Alert, Button } from 'react-native';
 import { Component } from 'react';
 
+
 const image = { uri: "https://reactjs.org/logo-og.png" };
 
 export default class Home extends Component {
