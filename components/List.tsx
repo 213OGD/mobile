@@ -1,132 +1,53 @@
+import { useQuery } from '@apollo/client';
 import React, { Component } from 'react';
-import { Text, View, StyleSheet, Image, } from 'react-native';
+import { Text, View, StyleSheet, Image, FlatList, SafeAreaView, } from 'react-native';
 import { ScrollView } from "react-native-gesture-handler";
+import GET_FILES from '../queries/files.queries';
 
-export default class List extends Component {
-render() {
+
+export default function List() {
+
+    const { loading, error, data } = useQuery(GET_FILES);
+    console.log(data);
+
+
     return (
 
-    <ScrollView style={ styles.container} >
-        <Text style= {styles.title}>LISTE DES DONNEES DU G-DRIVE</Text>
-        <Text numberOfLines={1}>               
-        ______________________________________________________________
-        </Text>
-        <Text style={styles.paragraph}>
-        Intiltulé de la donnée récupérée
-        </Text>
-        <View style={{flex: 1, flexDirection: 'row-reverse'}}>
-            
-            <Image style={styles.logo} source={{ uri: 'https://reactnative.dev/img/tiny_logo.png' }} resizeMode= 'contain'/>
-            <Text style={{paddingTop: 50, marginRight: 50}}> Descriptif du contenu </Text>
-        </View>
-        <Text numberOfLines={1}>               
-        ______________________________________________________________
-        </Text>
-        <Text style={styles.paragraph}>
-        Intiltulé de la donnée récupérée
-        </Text>
-        <View style={{flex: 1, flexDirection: 'row'}}>
-            <Image style={styles.logo} source={{ uri: 'https://reactnative.dev/img/tiny_logo.png' }} resizeMode= 'contain'/>
-            <Text style={{paddingTop: 50, marginLeft: 50}}> Descriptif du contenu </Text>
-        </View>
         
-        <Text numberOfLines={1}>               
-        ______________________________________________________________
-        </Text>
-        <Text style={styles.paragraph}>
-        Intiltulé de la donnée récupérée
-        </Text>
-        <View style={{flex: 1, flexDirection: 'row-reverse'}}>
-            
-            <Image style={styles.logo} source={{ uri: 'https://reactnative.dev/img/tiny_logo.png' }} resizeMode= 'contain'/>
-            <Text style={{paddingTop: 50, marginRight: 50}}> Descriptif du contenu </Text>
-        </View>
-        <Text numberOfLines={1}>               
-        ______________________________________________________________
-        </Text>
-        <Text style={styles.paragraph}>
-        Intiltulé de la donnée récupérée
-        </Text>
-        <View style={{flex: 1, flexDirection: 'row'}}>
-            <Image style={styles.logo} source={{ uri: 'https://reactnative.dev/img/tiny_logo.png' }} resizeMode= 'contain'/>
-            <Text style={{paddingTop: 50, marginLeft: 50}}> Descriptif du contenu </Text>
-        </View>
+    <SafeAreaView style={styles.container}>
+
+    <Text style= {styles.title}>LISTE DES DONNEES DU G-DRIVE</Text>
+
+    <Text style={styles.tags}>Tags : </Text>             
+
+
         
-        <Text numberOfLines={1}>               
-        ______________________________________________________________
-        </Text>
-        <Text style={styles.paragraph}>
-        Intiltulé de la donnée récupérée
-        </Text>
-        <View style={{flex: 1, flexDirection: 'row-reverse'}}>
-            
-            <Image style={styles.logo} source={{ uri: 'https://reactnative.dev/img/tiny_logo.png' }} resizeMode= 'contain'/>
-            <Text style={{paddingTop: 50, marginRight: 50}}> Descriptif du contenu </Text>
-        </View>
-        <Text numberOfLines={1}>               
-        ______________________________________________________________
-        </Text>
-        <Text style={styles.paragraph}>
-        Intiltulé de la donnée récupérée
-        </Text>
-        <View style={{flex: 1, flexDirection: 'row'}}>
-            <Image style={styles.logo} source={{ uri: 'https://reactnative.dev/img/tiny_logo.png' }} resizeMode= 'contain'/>
-            <Text style={{paddingTop: 50, marginLeft: 50}}> Descriptif du contenu </Text>
-        </View>
-        
-        <Text numberOfLines={1}>               
-        ______________________________________________________________
-        </Text>
-        <Text style={styles.paragraph}>
-        Intiltulé de la donnée récupérée
-        </Text>
-        <View style={{flex: 1, flexDirection: 'row-reverse'}}>
-            
-            <Image style={styles.logo} source={{ uri: 'https://reactnative.dev/img/tiny_logo.png' }} resizeMode= 'contain'/>
-            <Text style={{paddingTop: 50, marginRight: 50}}> Descriptif du contenu </Text>
-        </View>
-        <Text numberOfLines={1}>               
-        ______________________________________________________________
-        </Text>
-        <Text style={styles.paragraph}>
-        Intiltulé de la donnée récupérée
-        </Text>
-        <View style={{flex: 1, flexDirection: 'row'}}>
-            <Image style={styles.logo} source={{ uri: 'https://reactnative.dev/img/tiny_logo.png' }} resizeMode= 'contain'/>
-            <Text style={{paddingTop: 50, marginLeft: 50}}> Descriptif du contenu </Text>
-        </View>
-        
-        <Text numberOfLines={1}>               
-        ______________________________________________________________
-        </Text>
-        <Text style={styles.paragraph}>
-        Intiltulé de la donnée récupérée
-        </Text>
-        <View style={{flex: 1, flexDirection: 'row-reverse'}}>
-            
-            <Image style={styles.logo} source={{ uri: 'https://reactnative.dev/img/tiny_logo.png' }} resizeMode= 'contain'/>
-            <Text style={{paddingTop: 50, marginRight: 50}}> Descriptif du contenu </Text>
-        </View>
-        <Text numberOfLines={1}>               
-        ______________________________________________________________
-        </Text>
-        <Text style={styles.paragraph}>
-        Intiltulé de la donnée récupérée
-        </Text>
-        <View style={{flex: 1, flexDirection: 'row'}}>
-            <Image style={styles.logo} source={{ uri: 'https://reactnative.dev/img/tiny_logo.png' }} resizeMode= 'contain'/>
-            <Text style={{paddingTop: 50, marginLeft: 50}}> Descriptif du contenu </Text>
-        </View>
-        
-        <Text numberOfLines={1}>               
-        ______________________________________________________________
-        </Text>
-                
-    </ScrollView>   
+        { data && (
+    <FlatList
+        data={data.files}
+        keyExtractor={item => item._id}
+        renderItem={({item, index}) => (
+
+            <><Text style={styles.paragraph}>
+                {item.name}
+            </Text>
+
+            <View style={{ flex: 1, flexDirection: 'row-reverse' }}>
+                <Text style={{ paddingTop:25, paddingLeft: 25,marginRight: 80 }}> Descriptif du contenu </Text>
+                <Image style={styles.logo} source={{ uri: item.iconLink }} resizeMode='contain' />
+            </View>
+
+            <Text numberOfLines={1}>
+                ______________________________________________________________
+            </Text></>
+        )}
+    />
+        )}
+    </SafeAreaView>
     
-    );
-}
-}
+    
+    )}
+
 
 const styles = StyleSheet.create({
 container: {
@@ -144,17 +65,28 @@ paragraph: {
     textDecorationLine: 'underline',
 },
 logo: {
-    backgroundColor: "#056ecf",
-    height: 150,
-    width: 150,
-    justifyContent: "center",
     
+    height: 100,
+    width: 100,
+    justifyContent: "center",
     
 },
 title: {
-    fontSize: 24,
+    fontSize: 20,
     fontWeight: 'bold',
     textAlign: "center",
     marginBottom:20,
+},
+item: {
+    backgroundColor: '#f9c2ff',
+    padding: 20,
+    marginVertical: 8,
+    marginHorizontal: 16,
+},
+tags:{
+    borderTopWidth: 2,
+    borderBottomWidth: 2,
+    padding:5,
 }
+
 });
