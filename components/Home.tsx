@@ -1,30 +1,24 @@
 import { StatusBar } from 'expo-status-bar';
-import React, { constructor } from 'react';
 import { TextInput, ImageBackground, StyleSheet, Text, View, Alert, Button } from 'react-native';
 import { Component } from 'react';
+import React, { useState } from 'react';
+import { useNavigation } from '@react-navigation/native';
 
 
 const image = { uri: "https://reactjs.org/logo-og.png" };
 
-export default class Home extends Component {
+export default function Home() {
 
-constructor(props) {
-    super(props);
-    
-    this.state = {
-    username: '',
-    password: '',
-    };
-}
+const navigation = useNavigation();
 
-onLogin() {
-    const { username, password } = this.state;
+const [username, setUsername] = useState('');
+const [password, setPassword] = useState('');
+
+function onLogin() {
 
     Alert.alert('Credentials', `${username} + ${password}`);
 }
 
-
-render () {
     
         return (
         <View style={styles.container}>
@@ -34,15 +28,15 @@ render () {
             <View style= {{ marginTop: 300, marginBottom: 100 }}>
                 <View style= {{  alignItems: 'center' }}>
                 <TextInput
-                    value={this.state.username}
-                    onChangeText={(username) => this.setState({ username })}
+                    value={username}
+                    onChangeText={(username) => setUsername( username )}
                     placeholder={"Nom d'utilisateur"}
                     placeholderTextColor='white'
                     style={styles.input}
                 />
                 <TextInput
-                    value={this.state.password}
-                    onChangeText={(password) => this.setState({ password })}
+                    value={password}
+                    onChangeText={(password) => setPassword( password )}
                     placeholder={'Mot de passe'}
                     placeholderTextColor='white'
                     secureTextEntry={true}
@@ -51,15 +45,15 @@ render () {
                 </View>
                 <Button
                 title={'Connexion'}
-                style={styles.input}
-                onPress={this.onLogin.bind(this)}
+                
+                onPress={() => navigation.navigate('List')}
                 />
             </View>
             </ImageBackground>
         </View>
         );
     }
-}
+
 const styles = StyleSheet.create({
     container: {
     flex: 1,

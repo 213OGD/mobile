@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { Text, View, StyleSheet, Image } from 'react-native';
 
-export default class Form extends Component {
-  render() {
+export default function Form() {
+
     return (
       <View style={styles.container}>
         <Text style={styles.paragraph}>
@@ -12,7 +12,7 @@ export default class Form extends Component {
       </View>
     );
   }
-}
+
 
 const styles = StyleSheet.create({
   container: {
