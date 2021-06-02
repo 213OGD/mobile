@@ -9,6 +9,7 @@ import { REACT_APP_URI } from 'react-native-dotenv';
 import Home from "./components/Home";
 import Form from "./components/Form";
 import List from "./components/List";
+import Notif from "./components/Notif";
 import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
 
 
@@ -54,7 +55,7 @@ export default function App() {
       >
         <Tab.Screen name="Home" component={Home} />
         <Tab.Screen name="List" component={List} />
-        <Tab.Screen name="Logout" component={Form} />
+        <Tab.Screen name="Logout" component={Notif} />
       </Tab.Navigator>
     
     </NavigationContainer>
