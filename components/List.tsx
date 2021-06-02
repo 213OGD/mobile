@@ -21,7 +21,8 @@ export default function List() {
     <Text style={styles.tags}>Tags : </Text>             
 
 
-        
+        { loading && (<Text>Loading</Text>)}
+        { error && (<Text>{error}</Text>)}
         { data && (
     <FlatList
         data={data.files}
