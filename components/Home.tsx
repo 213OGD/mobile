@@ -1,8 +1,11 @@
 import { StatusBar } from 'expo-status-bar';
-import { TextInput, ImageBackground, StyleSheet, Text, View, Alert, Button } from 'react-native';
-import { Component } from 'react';
+import { TextInput, ImageBackground, StyleSheet, Text, View, Alert, Button, TouchableOpacity } from 'react-native';
+import { Component, FormEvent } from 'react';
 import React, { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
+import { FetchResult, useMutation } from '@apollo/client';
+import POST_LOG from '../queries/users.queries';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 const image = { uri: "https://reactjs.org/logo-og.png" };
@@ -11,12 +14,59 @@ export default function Home() {
 
 const navigation = useNavigation();
 
-const [username, setUsername] = useState('');
+const [mail, setMail] = useState('');
 const [password, setPassword] = useState('');
 
-function onLogin() {
+const [flashMessage, setFlashMessage] = useState('');
 
-    Alert.alert('Credentials', `${username} + ${password}`);
+const [logs] = useMutation(POST_LOG);
+
+async function handleSuccess(
+res: FetchResult<any, Record<string, any>, Record<string, any>>
+) {
+console.log('res', res);
+if (res.data.login === null) {
+    setFlashMessage("L'utilisateur n'existe pas.");
+} else {
+    setFlashMessage('');
+
+    AsyncStorage.setItem('token', res.data.login.token);
+    AsyncStorage.setItem('username', res.data.login.user.username);
+    // eslint-disable-next-line no-underscore-dangle
+    AsyncStorage.setItem('id', res.data.login.user._id);
+
+    setFlashMessage(
+    `Connexion réussie ! Bienvenue ${res.data.login.user.username}`
+    );
+    navigation.navigate('List');
+}
+}
+
+async function loginSubmission(e: FormEvent) {
+
+console.log("submit");
+
+if (mail === '' || password === '') {
+    if (mail === '') setFlashMessage('Veuillez saisir un email');
+    else if (password === '')
+    setFlashMessage('Veuillez saisir un mot de passe');
+} else {
+    setFlashMessage('');
+    // console.log(mail, password);
+    try {
+    const res = await logs({ variables: { mail, password } });
+    handleSuccess(res);
+    } catch (error) {
+    // console.log('error', error.message);
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+    error.message === 'Wrong Password!'
+        ? setFlashMessage('Mauvais mot de passe')
+        : setFlashMessage(error.message);
+    }
+}
+
+setMail('');
+setPassword('');
 }
 
     
@@ -28,9 +78,9 @@ function onLogin() {
             <View style= {{ marginTop: 300, marginBottom: 100 }}>
                 <View style= {{  alignItems: 'center' }}>
                 <TextInput
-                    value={username}
-                    onChangeText={(username) => setUsername( username )}
-                    placeholder={"Nom d'utilisateur"}
+                    value={mail}
+                    onChangeText={(mail) => setMail( mail )}
+                    placeholder={"Email utilisteur"}
                     placeholderTextColor='white'
                     style={styles.input}
                 />
@@ -42,11 +92,17 @@ function onLogin() {
                     secureTextEntry={true}
                     style={styles.input}
                 />
+                <TouchableOpacity>
+                    <Text style={{color : "white", paddingBottom: 50 }}>Mot de passe oublié?</Text>
+                </TouchableOpacity>
+                {flashMessage !== '' && <Text>{flashMessage}</Text>}
+                <TouchableOpacity >
+                    <Button 
+                    title={'Connexion'}
+                    onPress={loginSubmission}
+                    />
+                </TouchableOpacity>
                 </View>
-                <Button
-                title={'Connexion'}
-                onPress={() => navigation.navigate('List')}
-                />
             </View>
             </ImageBackground>
         </View>
@@ -85,4 +141,5 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     color: "white",
     },
+    
 });
