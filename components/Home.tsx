@@ -45,7 +45,6 @@ function onLogin() {
                 </View>
                 <Button
                 title={'Connexion'}
-                
                 onPress={() => navigation.navigate('List')}
                 />
             </View>
