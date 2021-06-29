@@ -12,6 +12,9 @@ import Form from "./components/Form";
 import List from "./components/List";
 import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
 import { createStackNavigator } from '@react-navigation/stack';
+import Signup from "./components/SignUp";
+import signUp from "./components/SignUp";
+import SignUp from "./components/SignUp";
 
 
 const Tab = createBottomTabNavigator();
@@ -60,7 +63,8 @@ export default function App() {
                         // You can return any component that you like here!
                         return <Ionicons name={iconName} size={size} color={color} />;
                     },
-                    tabBarButton: ['Home'].includes(route.name) ? () => null : undefined,
+                    tabBarButton: ['Home','SignUp'].includes(route.name) ? () => null : undefined,
+                                        
                 })}
                 tabBarOptions={{
                     activeTintColor: 'black',
@@ -75,6 +79,10 @@ export default function App() {
 
             >
                 <Tab.Screen name="Home" component={Home} 
+                options={({route}) => ({
+                  tabBarVisible: false,
+                })}/>
+                <Tab.Screen name="SignUp" component={SignUp} 
                 options={({route}) => ({
                   tabBarVisible: false,
                 })}/>

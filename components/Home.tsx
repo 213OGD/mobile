@@ -6,6 +6,8 @@ import { useNavigation } from '@react-navigation/native';
 import { FetchResult, useMutation } from '@apollo/client';
 import POST_LOG from '../queries/users.queries';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Signup from './SignUp';
+import SignUp from './SignUp';
 
 
 const image = { uri: "https://reactjs.org/logo-og.png" };
@@ -103,6 +105,12 @@ setPassword('');
                     />
                 </TouchableOpacity>
                 </View>
+                <TouchableOpacity >
+                    <Button 
+                    title={'Créer un compte'}
+                    onPress={() => navigation.navigate('SignUp')}
+                    />
+                </TouchableOpacity>
             </View>
             </ImageBackground>
         </View>
