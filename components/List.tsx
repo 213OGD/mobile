@@ -13,6 +13,7 @@ export default function List() {
 
     const { loading, error, data } = useQuery(GET_FILES);
     const Tab = createBottomTabNavigator();
+    
 
     return (
 
@@ -36,7 +37,7 @@ export default function List() {
                         </Text>
 
                             <View style={{ flex: 1, flexDirection: 'row-reverse' }}>
-                                <Text style={{ paddingTop: 25, paddingLeft: 25, marginRight: 80 }}> tags {item.tags}: </Text>
+                                <Text style={{ paddingTop: 25, paddingLeft: 25, marginRight: 80 }}> tags : {item.tags} </Text>
                                 <Image style={styles.logo} source={{ uri: item.iconLink }} resizeMode='contain' />
                             </View>
 

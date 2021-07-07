@@ -40,6 +40,7 @@ async function signupSubmission(e: FormEvent) {
     } catch (error) {
         setFlashMessage(error.message);
         // console.log('error', error);
+    
     }
     }
 }
@@ -74,6 +75,10 @@ return(
             onPress={signupSubmission}
             />
         </TouchableOpacity>
+        <Button 
+        title={'back to login'}
+        onPress={() => navigation.navigate('Home')}
+        />
     </View>
 
 
@@ -85,6 +90,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: 'grey'
     },
     image: {
     flex: 1,

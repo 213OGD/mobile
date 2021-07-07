@@ -10,7 +10,7 @@ import Signup from './SignUp';
 import SignUp from './SignUp';
 
 
-const image = { uri: "https://reactjs.org/logo-og.png" };
+
 
 export default function Home() {
 
@@ -74,7 +74,7 @@ setPassword('');
     
         return (
         <View style={styles.container}>
-            <ImageBackground source={image} style={styles.image}>
+            
             <Text style={styles.text}>Welcome on The Super Appli</Text>
             <StatusBar style="auto" />
             <View style= {{ marginTop: 300, marginBottom: 100 }}>
@@ -112,7 +112,7 @@ setPassword('');
                     />
                 </TouchableOpacity>
             </View>
-            </ImageBackground>
+            
         </View>
         );
     }
@@ -122,11 +122,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    },
-    image: {
-    flex: 1,
-    resizeMode: "cover",
-    justifyContent: "center"
+    backgroundColor: "darkgrey"
     },
     text: {
     marginTop: 50,
