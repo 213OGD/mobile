@@ -4,13 +4,10 @@ import { Component, FormEvent } from 'react';
 import React, { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { FetchResult, useMutation } from '@apollo/client';
-import POST_LOG from '../queries/users.queries';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import Signup from './SignUp';
-import SignUp from './SignUp';
+import { tw } from "react-native-tailwindcss";
 
-
-
+import POST_LOG from '../queries/users.queries';
 
 export default function Home() {
 
@@ -66,79 +63,70 @@ setMail('');
 setPassword('');
 }
 
-    
-        return (
-        <View style={styles.container}>
-            
-            <Text style={styles.text}>Welcome on The Super Appli</Text>
-            <StatusBar style="auto" />
-            <View style= {{ marginTop: 300, marginBottom: 100 }}>
-                <View style= {{  alignItems: 'center' }}>
+return (
+    <View style={[tw.pT5, tw.wFull]}>
+        <View style={[tw.p5, tw.bgRed500]}>
+            <Text style={[tw.textWhite, tw.text3xl, tw.textCenter, tw.fontBold ]}>213 Odyssey</Text>
+        </View>
+        <View>
+            <View style={[tw.wFull, tw.p2, tw.itemsCenter, tw.justifyCenter]}>
                 <TextInput
                     value={mail}
-                    onChangeText={(mail) => setMail( mail )}
-                    placeholder={"Email utilisteur"}
-                    placeholderTextColor='white'
-                    style={styles.input}
+                    onChangeText={(mail) => {setMail( mail ); setFlashMessage('') }}
+                    placeholder={"Email"}
+                    placeholderTextColor='grey'
+                    style={[tw.textBlack, tw.bgWhite ,tw.border, tw.p3, tw.wFull, tw.rounded, tw.m1, tw.textBase, flashMessage && {borderColor:'red'}]}
                 />
                 <TextInput
                     value={password}
-                    onChangeText={(password) => setPassword( password )}
+                    onChangeText={(password) => { setPassword( password ); setFlashMessage('') }}
                     placeholder={'Mot de passe'}
-                    placeholderTextColor='white'
+                    placeholderTextColor='grey'
                     secureTextEntry={true}
-                    style={styles.input}
+                    style={[tw.textBlack, tw.bgWhite ,tw.border, tw.p3, tw.wFull, tw.rounded, tw.m1, tw.textBase, flashMessage && {borderColor:'red'}]}
                 />
-                <TouchableOpacity>
-                    <Text style={{color : "white", paddingBottom: 50 }}>Mot de passe oublié?</Text>
-                </TouchableOpacity>
-                {flashMessage !== '' && <Text>{flashMessage}</Text>}
-                <TouchableOpacity >
-                    <Button 
-                    title={'Connexion'}
-                    onPress={loginSubmission}
-                    />
-                </TouchableOpacity>
+                <View style={[tw.p2]}>
+                    {flashMessage !== '' && <Text style={[tw.textRed600]}>{flashMessage}</Text>}
                 </View>
-                <TouchableOpacity >
-                    <Button 
-                    title={'Créer un compte'}
-                    onPress={() => navigation.navigate('SignUp')}
-                    />
+                <TouchableOpacity>
+                    <Text style={[tw.p2]}>Mot de passe oublié ?</Text>
                 </TouchableOpacity>
+                
+                <TouchableOpacity  activeOpacity={0.8} style={[tw.bgRed500, tw.itemsCenter, tw.wFull, tw.flexCol, tw.rounded]} onPress={loginSubmission}><Text style={[tw.text2xl , tw.textWhite, tw.p5]}>Connexion</Text></TouchableOpacity>
+            <TouchableOpacity activeOpacity={0.8} style={[tw.mT2, tw.bgRed500, tw.itemsCenter, tw.wFull, tw.flexCol, tw.rounded]}  onPress={() => navigation.navigate('SignUp')}><Text  style={[tw.text2xl , tw.textWhite, tw.p5]}>Créer un compte</Text></TouchableOpacity>
             </View>
-            
         </View>
-        );
-    }
+    </View>
+);
+}
 
 const styles = StyleSheet.create({
-    container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: "darkgrey"
-    },
-    text: {
-    marginTop: 50,
-    paddingTop: 20,
-    paddingBottom: 20,
-    color: "white",
-    fontSize: 42,
-    fontWeight: "bold",
-    textAlign: "center",
-    },
-    input: {
+    // container: {
+    // flex: 1,
+    // alignItems: 'center',
+    // justifyContent: 'center',
+    // backgroundColor: "darkgrey"
+    // },
+    // text: {
+    // marginTop: 50,
+    // paddingTop: 20,
+    // paddingBottom: 20,
+    // color: "white",
+    // fontSize: 42,
+    // fontWeight: "bold",
+    // textAlign: "center",
+    // },
+    // input: {
     
-    textAlign: "center",
-    backgroundColor: "rgba(52, 52, 52, 0.8)",
-    width: 200,
-    height: 44,
-    padding: 10,
-    borderWidth: 1,
-    borderColor: 'white',
-    marginBottom: 10,
-    color: "white",
-    },
+    // textAlign: "center",
+    // backgroundColor: "rgba(52, 52, 52, 0.8)",
+    // width: 200,
+    // height: 44,
+    // padding: 10,
+    // borderWidth: 1,
+    // borderColor: 'white',
+    // marginBottom: 10,
+    // color: "white",
+    // },
     
 });

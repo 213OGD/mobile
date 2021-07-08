@@ -2,17 +2,18 @@ import { StatusBar } from "expo-status-bar";
 import React from "react";
 
 import { Ionicons } from '@expo/vector-icons';
-import { StyleSheet, Text, View, Button } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
 import { createStackNavigator } from '@react-navigation/stack';
 // @ts-ignore
 import { REACT_APP_URI } from 'react-native-dotenv';
+import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
+import { createStackNavigator } from '@react-navigation/stack';
+
 import Home from "./components/Home";
 import List from "./components/List";
 import SignUp from "./components/SignUp";
-
 
 const Tab = createBottomTabNavigator();
 const client = new ApolloClient({
@@ -45,6 +46,7 @@ export default function App() {
             <Stack.Screen name="List" component={List} />
         </Stack.Navigator>
       </NavigationContainer>
+      <StatusBar backgroundColor={'black'} style="light" translucent={true}/>
   </ApolloProvider>
   );
 } 
