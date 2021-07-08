@@ -26,7 +26,6 @@ const [logs] = useMutation(POST_LOG);
 async function handleSuccess(
 res: FetchResult<any, Record<string, any>, Record<string, any>>
 ) {
-console.log('res', res);
 if (res.data.login === null) {
     setFlashMessage("L'utilisateur n'existe pas.");
 } else {
@@ -46,20 +45,16 @@ if (res.data.login === null) {
 
 async function loginSubmission(e: FormEvent) {
 
-console.log("submit");
-
 if (mail === '' || password === '') {
     if (mail === '') setFlashMessage('Veuillez saisir un email');
     else if (password === '')
     setFlashMessage('Veuillez saisir un mot de passe');
 } else {
     setFlashMessage('');
-    // console.log(mail, password);
     try {
     const res = await logs({ variables: { mail, password } });
     handleSuccess(res);
     } catch (error) {
-    // console.log('error', error.message);
     // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     error.message === 'Wrong Password!'
         ? setFlashMessage('Mauvais mot de passe')

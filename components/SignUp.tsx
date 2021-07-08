@@ -30,16 +30,13 @@ async function signupSubmission(e: FormEvent) {
 
     try {
         const res = await signup({ variables: { username, mail, password } });
-        console.log(res);
         AsyncStorage.setItem('token', res.data.addUser.token);
         AsyncStorage.setItem('username', res.data.addUser.user.username);
         // eslint-disable-next-line no-underscore-dangle
         AsyncStorage.setItem('id', res.data.addUser.user._id);
-        console.log(res);
         navigation.navigate('List');
     } catch (error) {
         setFlashMessage(error.message);
-        // console.log('error', error);
     
     }
     }
