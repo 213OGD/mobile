@@ -2,20 +2,17 @@ import { StatusBar } from "expo-status-bar";
 import React from "react";
 
 import { Ionicons } from '@expo/vector-icons';
-import { StyleSheet, Text, View, Button } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 // @ts-ignore
 import { REACT_APP_URI } from 'react-native-dotenv';
+import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
+import { createStackNavigator } from '@react-navigation/stack';
+
 import Home from "./components/Home";
 import Form from "./components/Form";
 import List from "./components/List";
-import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
-import { createStackNavigator } from '@react-navigation/stack';
-import Signup from "./components/SignUp";
-import signUp from "./components/SignUp";
 import SignUp from "./components/SignUp";
-
 
 const Tab = createBottomTabNavigator();
 const client = new ApolloClient({
@@ -23,9 +20,6 @@ const client = new ApolloClient({
   cache: new InMemoryCache(),
 });
 console.log('test',REACT_APP_URI);
-
-
-
 
 const Stack = createStackNavigator();
 
@@ -64,7 +58,6 @@ export default function App() {
                         return <Ionicons name={iconName} size={size} color={color} />;
                     },
                     tabBarButton: ['Home','SignUp'].includes(route.name) ? () => null : undefined,
-                                        
                 })}
                 tabBarOptions={{
                     activeTintColor: 'black',
@@ -91,8 +84,8 @@ export default function App() {
                 
             </Tab.Navigator>
     </NavigationContainer>
+    <StatusBar backgroundColor={'black'} style="light" translucent={true}/>
   </ApolloProvider>
-    
   );
 } 
 
