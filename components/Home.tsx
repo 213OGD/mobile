@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
-import { TextInput, ImageBackground, StyleSheet, Text, View, Alert, Button, TouchableOpacity } from 'react-native';
-import { Component, FormEvent } from 'react';
+import { TextInput, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { FormEvent } from 'react';
 import React, { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { FetchResult, useMutation } from '@apollo/client';
@@ -31,10 +31,7 @@ if (res.data.login === null) {
     AsyncStorage.setItem('token', res.data.login.token);
     AsyncStorage.setItem('username', res.data.login.user.username);
     AsyncStorage.setItem('id', res.data.login.user.id);
-
-    setFlashMessage(
-    `Connexion réussie ! Bienvenue ${res.data.login.user.username}`
-    );
+    setFlashMessage('');
     navigation.navigate('List');
 }
 }

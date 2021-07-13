@@ -4,7 +4,8 @@ import {Text, View, StyleSheet, Image, FlatList, SafeAreaView, TouchableOpacity,
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { TouchableHighlight } from 'react-native-gesture-handler';
 import { tw } from "react-native-tailwindcss";
-import MenuDrawer from 'react-native-side-drawer'
+import MenuDrawer from 'react-native-side-drawer';
+import { AntDesign } from '@expo/vector-icons'; 
 
 import GET_TAGS from '../queries/tags.queries';
 import GET_FILES from '../queries/files.queries';
@@ -12,8 +13,11 @@ import GET_FILES from '../queries/files.queries';
 import TagList from './TagList';
 import RenderSeparator from './RenderSeparator';
 import useTagSelection from '../hooks/useTagSelection';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useNavigation } from '@react-navigation/native';
 
 export default function List() {
+    const navigation = useNavigation();
 
     const { loading, error, data } = useQuery(GET_FILES);
     const { loading: loadingTags, error: errorTags, data: dataTags } = useQuery(
@@ -49,6 +53,13 @@ export default function List() {
         );
     };
 
+    function logout(){
+        AsyncStorage.removeItem('odyssey213Token');
+        AsyncStorage.removeItem('username');
+        AsyncStorage.removeItem('id');
+        navigation.navigate('Home');
+    }
+
     const renderItem = ({item}: any) => {
         return (
         isFileSelected(item.tags, selectedTags) && (
@@ -82,9 +93,12 @@ export default function List() {
     <>
         <SafeAreaView style={[tw.relative]}>
 
-    <View style={[tw.pT10, tw.pB2, tw.bgRed500]}>
+    <View style={[tw.pT8, tw.pB2, tw.bgRed500, tw.relative]}>
             <Text style={[tw.textWhite, tw.text3xl, tw.textCenter, tw.fontBold ]}>Odyssey 213</Text>
             <Text style={[tw.pT3, tw.textWhite, tw.textCenter, tw.text2xl]}>Liste des fichiers</Text>
+            <View style={[tw.absolute, {right: 10, top: 40}]}>
+                <AntDesign name="logout" size={25} color="white" onPress={logout}/>
+            </View>
                 <View>
                         <TouchableHighlight onPress={toggleOpen}  style={[tw.mR1, tw.w20, tw.selfEnd, tw.border2, tw.borderWhite, tw.rounded]} >
                             <Text style={[tw.textWhite, tw.textCenter, tw.fontBold]}>Filtre</Text>
@@ -117,7 +131,5 @@ export default function List() {
                     renderItem={renderItem}
                     />
             )}
-            
-        
             </>
 )};

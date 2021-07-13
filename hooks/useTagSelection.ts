@@ -42,6 +42,7 @@ const useTagSelection = (
         dataTags.tags.map((tag: { name: string }) => {
           tagList.push(tag.name);
         });
+        tagList.sort((a,b) => a.toLowerCase().localeCompare(b.toLowerCase()));
         setDisplayTags(tagList);
       }
     }

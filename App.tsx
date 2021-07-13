@@ -25,16 +25,6 @@ export default function App() {
   <ApolloProvider client={client}>
 
     <NavigationContainer>
-
-    {/* LOGOUT function */}
-        {/* <Stack.Navigator screenOptions={({navigation}) => ({
-          headerRight: () => (<View  style={{ paddingRight:10}}><Text
-            onPress={() => {
-                        
-                        navigation.navigate('List');
-                    }}
-                    title="Accueil" /></Text>)
-        })} initialRouteName="Home"> */}
         <Stack.Navigator screenOptions={{
             headerShown: false
         }}>

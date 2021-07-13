@@ -6,11 +6,11 @@ import { tw } from "react-native-tailwindcss";
 export default function TagList({displayTags, onCheck}: any){
 
     return (
-        <View style={[tw.bgWhite]}>
+        <View style={[tw.bgWhite, tw.pB8]}>
             {displayTags && (          
                 <FlatList
                     data={displayTags}
-                    keyExtractor={(item) => item}
+                    keyExtractor={item => item}
                     renderItem={({ item }) => (
                         <TagItem item={item} onCheckTag={(item: any, isChecked: boolean) => onCheck(item, isChecked)}/>
                     )} 
