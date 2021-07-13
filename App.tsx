@@ -9,6 +9,7 @@ import { REACT_APP_URI } from 'react-native-dotenv';
 
 import Home from "./components/Home";
 import List from "./components/List";
+import SignUp from "./components/SignUp";
 
 const Tab = createBottomTabNavigator();
 const client = new ApolloClient({
@@ -39,6 +40,7 @@ export default function App() {
         }}>
             <Stack.Screen name="Home" component={Home} />
             <Stack.Screen name="List" component={List} />
+            <Stack.Screen name="SignUp" component={SignUp} />
         </Stack.Navigator>
       </NavigationContainer>
       <StatusBar backgroundColor={'black'} style="light" translucent={true}/>

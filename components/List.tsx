@@ -1,16 +1,17 @@
 import { useQuery } from '@apollo/client';
-import React, {  Component, useState } from 'react';
-import {Text, View, StyleSheet, Image, FlatList, SafeAreaView, Button, TouchableOpacity} from 'react-native';
-
+import React, { useState } from 'react';
+import {Text, View, StyleSheet, Image, FlatList, SafeAreaView, TouchableOpacity, Linking, ActivityIndicator} from 'react-native';
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { TouchableHighlight } from 'react-native-gesture-handler';
+import { tw } from "react-native-tailwindcss";
+import MenuDrawer from 'react-native-side-drawer'
+
 import GET_TAGS from '../queries/tags.queries';
 import GET_FILES from '../queries/files.queries';
 
-import MenuDrawer from 'react-native-side-drawer'
 import TagList from './TagList';
+import RenderSeparator from './RenderSeparator';
 import useTagSelection from '../hooks/useTagSelection';
-import { Linking } from 'react-native';
-
 
 export default function List() {
 
@@ -39,140 +40,84 @@ export default function List() {
         return (
             <View>
                 <View>
-                    <TouchableOpacity onPress={toggleOpen} style={styles.animatedBox}>
-                    <Text>Close</Text>
-                    </TouchableOpacity>
+                    {/* <TouchableOpacity onPress={toggleOpen} style={[tw.bgWhite]}>
+                    <Text style={[tw.textRight]}>Close</Text>
+                    </TouchableOpacity> */}
                 </View>
                 <TagList selectedTags={selectedTags} displayTags={displayTags} onCheck={(item:any, isChecked: boolean) => tagSelection(item, isChecked)}/>
             </View>
         );
     };
-    
+
     const renderItem = ({item}: any) => {
         return (
         isFileSelected(item.tags, selectedTags) && (
-                <>
-                <TouchableOpacity onPress={() => Linking.openURL(item.webViewLink)}>
-                    <Text style={styles.paragraph}>
-                        {item.name}
-                    </Text>
-                </TouchableOpacity>
-
-                    <View style={{ flex: 1, flexDirection: 'row-reverse' }}>
-                        <Text style={{ paddingTop: 25, paddingLeft: 25, marginRight: 80 }}> tags : {item.tags} </Text>
-                        <Image style={styles.logo} source={{ uri: item.iconLink }} resizeMode='contain' />
+            <>
+                <View style={[tw.flexRow, tw.m2, tw.pT2]}>
+                    <View>
+                        <Image style={[{height: 75, width:75}]} source={{ uri: item.iconLink.replace('16', '256') }} resizeMode='contain' />
                     </View>
-
-                    <Text numberOfLines={1}>
-                        ______________________________________________________________
-                    </Text>
-                </>
+                    <View style={[tw.flex1, tw.flexCol, tw.justifyAround]}>
+                        <TouchableOpacity onPress={() => Linking.openURL(item.webViewLink)}>
+                            <Text style={[tw.textXl, tw.textCenter, tw.textBlack, tw.underline,tw.fontBold, tw.p2, tw.contentBetween]}>
+                                {item.name}
+                            </Text>
+                        </TouchableOpacity>
+                        <View style={[tw.flexRow, tw.justifyAround]}>
+                            {item.tags.length > 0 && (
+                                item.tags.map((tag: string, index: React.Key | null | undefined) => (
+                                        <Text key={index} style={[tw.border2,tw.flexWrap, tw.textCenter, tw.borderRed600, tw.fontBold, tw.textBlack, tw.pX2, tw.pT1,tw.justifyCenter, tw.roundedFull]}>{tag}</Text>
+                                ))
+                            )}
+                        </View>
+                    </View>
+              </View>
+              <RenderSeparator />
+            </>
             )
         )}
 
     return (
 
     <>
-    <SafeAreaView style={styles.container}>
+        <SafeAreaView style={[tw.relative]}>
 
-            <Text style={styles.title}>LISTE DES FICHIERS</Text>
-            
-            <View style={styles.container}>
+    <View style={[tw.pT10, tw.pB2, tw.bgRed500]}>
+            <Text style={[tw.textWhite, tw.text3xl, tw.textCenter, tw.fontBold ]}>Odyssey 213</Text>
+            <Text style={[tw.pT3, tw.textWhite, tw.textCenter, tw.text2xl]}>Liste des fichiers</Text>
+                <View>
+                        <TouchableHighlight onPress={toggleOpen}  style={[tw.mR1, tw.w20, tw.selfEnd, tw.border2, tw.borderWhite, tw.rounded]} >
+                            <Text style={[tw.textWhite, tw.textCenter, tw.fontBold]}>Filtre</Text>
+                        </TouchableHighlight>
+                </View>
+        </View>
+            <View style={[tw.absolute, tw.bottom0]}>
                 <MenuDrawer 
                 open={open} 
                 drawerContent={drawerContent ()}
                 drawerPercentage={45}
                 animationTime={250}
                 overlay={true}
-                opacity={0.4}
-                >
-                    <TouchableOpacity onPress={toggleOpen} >
-                        <Text>Filtre</Text>
-                    </TouchableOpacity>
-                </MenuDrawer>
+                opacity={1}
+                />
             </View>
-            
-            {loading && (<Text>Loading</Text>)}
+            </SafeAreaView>
+            {loading && (
+            <>
+                <View style={{flex: 1, flexDirection: "row", justifyContent: "space-around", padding: 10 }}>
+                    <ActivityIndicator  size="large" color="#fb7185"/>
+                </View>
+            </>
+            )}
             {error && (<Text>err {console.log(error)}</Text>)}
             {data && (
                 <FlatList
                     data={data.files}
-                    keyExtractor={item => item._id}
+                    keyExtractor={item => item.id}
                     renderItem={renderItem}
                     />
             )}
             
-        </SafeAreaView>
+        
             </>
 )};
-
-
-const styles = StyleSheet.create({
-container: {
-    flex:1,
-    paddingTop: 50,
-    marginBottom: 50
-},
-paragraph: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#34495e',
-    textAlign: "center",
-    marginBottom: 20,
-    marginTop: 20,
-    textDecorationLine: 'underline',
-},
-logo: {
-    
-    height: 100,
-    width: 100,
-    justifyContent: "center",
-    
-},
-title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    textAlign: "center",
-    marginBottom:20,
-},
-item: {
-    backgroundColor: '#f9c2ff',
-    padding: 20,
-    marginVertical: 8,
-    marginHorizontal: 16,
-},
-tags:{
-    borderTopWidth: 2,
-    borderBottomWidth: 2,
-    padding:5,
-},
-checkboxContainer: {
-    flexDirection: "row",
-    marginBottom: 20,
-},
-checkbox: {
-    alignSelf: "center",
-},
-label: {
-    margin: 8,
-},
-nav : {
-    flex: 1,
-    backgroundColor: "red",
-    alignItems: "center",
-    justifyContent: "center",
-    color: "red",
-},
-animatedBox: {
-    flex: 1,
-    backgroundColor: "#38C8EC",
-    padding: 10
-},
-body: {
-    flex: 1,
-    zIndex:10,
-
-    backgroundColor: '#F04812'
-}
-});
-

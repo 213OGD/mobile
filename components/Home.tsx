@@ -30,8 +30,7 @@ if (res.data.login === null) {
 
     AsyncStorage.setItem('token', res.data.login.token);
     AsyncStorage.setItem('username', res.data.login.user.username);
-    // eslint-disable-next-line no-underscore-dangle
-    AsyncStorage.setItem('id', res.data.login.user._id);
+    AsyncStorage.setItem('id', res.data.login.user.id);
 
     setFlashMessage(
     `Connexion réussie ! Bienvenue ${res.data.login.user.username}`
@@ -66,7 +65,7 @@ setPassword('');
 return (
     <View style={[tw.pT5, tw.wFull]}>
         <View style={[tw.p5, tw.bgRed500]}>
-            <Text style={[tw.textWhite, tw.text3xl, tw.textCenter, tw.fontBold ]}>213 Odyssey</Text>
+            <Text style={[tw.textWhite, tw.text3xl, tw.textCenter, tw.fontBold ]}>Odyssey 213</Text>
         </View>
         <View>
             <View style={[tw.wFull, tw.p2, tw.itemsCenter, tw.justifyCenter]}>
@@ -88,12 +87,12 @@ return (
                 <View style={[tw.p2]}>
                     {flashMessage !== '' && <Text style={[tw.textRed600]}>{flashMessage}</Text>}
                 </View>
-                <TouchableOpacity>
+                {/* <TouchableOpacity>
                     <Text style={[tw.p2]}>Mot de passe oublié ?</Text>
-                </TouchableOpacity>
+                </TouchableOpacity> */}
                 
                 <TouchableOpacity  activeOpacity={0.8} style={[tw.bgRed500, tw.itemsCenter, tw.wFull, tw.flexCol, tw.rounded]} onPress={loginSubmission}><Text style={[tw.text2xl , tw.textWhite, tw.p5]}>Connexion</Text></TouchableOpacity>
-            <TouchableOpacity activeOpacity={0.8} style={[tw.mT2, tw.bgRed500, tw.itemsCenter, tw.wFull, tw.flexCol, tw.rounded]}  onPress={() => navigation.navigate('SignUp')}><Text  style={[tw.text2xl , tw.textWhite, tw.p5]}>Créer un compte</Text></TouchableOpacity>
+            <TouchableOpacity activeOpacity={0.8} style={[tw.mT2, tw.bgGray500, tw.itemsCenter, tw.wFull, tw.flexCol, tw.rounded]}  onPress={() => navigation.navigate('Signup')}><Text  style={[tw.text2xl , tw.textWhite, tw.p5]}>Créer un compte</Text></TouchableOpacity>
             </View>
         </View>
     </View>

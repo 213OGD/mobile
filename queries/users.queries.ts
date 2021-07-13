@@ -4,7 +4,7 @@ const POST_LOG = gql`
 mutation postLog($mail: String!, $password: String!) {
     login(mail: $mail, password: $password) {
         user {
-        _id
+        id
         username
         }
         token
@@ -24,14 +24,14 @@ mutation getPayload($token: String!) {
 `;
 
 export const SIGNUP = gql`
-mutation signup($username: String!, $mail: String!, $password: String!) {
-    addUser(username: $username, mail: $mail, password: $password) {
-    user {
-        _id
+  mutation signup($username: String!, $mail: String!, $password: String!) {
+    addUser(user: { username: $username, mail: $mail, password: $password }) {
+      user {
+        id
         username
         mail
+      }
+      token
     }
-    token
-    }
-}
+  }
 `;

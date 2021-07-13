@@ -3,7 +3,7 @@ import { gql } from '@apollo/client';
 const GET_FILES = gql`
   query getFiles {
     files {
-      _id
+      id
       googleId
       name
       iconLink

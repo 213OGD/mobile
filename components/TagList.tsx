@@ -1,18 +1,18 @@
 import React, { useState } from "react";
 import { FlatList, View, Text } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import { tw } from "react-native-tailwindcss";
 
 export default function TagList({displayTags, onCheck}: any){
 
     return (
-        <View>
+        <View style={[tw.bgWhite]}>
             {displayTags && (          
                 <FlatList
                     data={displayTags}
                     keyExtractor={(item) => item}
                     renderItem={({ item }) => (
                         <TagItem item={item} onCheckTag={(item: any, isChecked: boolean) => onCheck(item, isChecked)}/>
-                        
                     )} 
                 />
             )}
@@ -32,7 +32,7 @@ function TagItem({item, onCheckTag}: any){
                     onCheckTag(item, !isChecked);
                 }}
             >
-                <Text style={isChecked ? {color: 'pink'} : {color: 'black'} }>
+                <Text style={[tw.p5 ,tw.textCenter, isChecked ? [tw.bgRed400 ,tw.textWhite] : [tw.bgWhite, tw.textRed400]] }>
                     {item}
                 </Text>
             </TouchableOpacity>
