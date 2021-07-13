@@ -14,7 +14,26 @@ import SignUp from "./components/SignUp";
 const Tab = createBottomTabNavigator();
 const client = new ApolloClient({
   uri: REACT_APP_URI,
-  cache: new InMemoryCache(),
+  cache: new InMemoryCache({
+    typePolicies: {
+      Query: {
+        fields: {
+          files: {
+            keyArgs: false,
+            merge(existing = [], incoming) {
+              return [...existing, ...incoming];
+            }
+          },
+          tags: {
+            keyArgs: false,
+            merge(existing = [], incoming) {
+              return [...existing, ...incoming];
+            }
+          }
+        }
+      }
+    }
+  }),
 });
 // console.log('test',REACT_APP_URI);
 

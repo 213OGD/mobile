@@ -1,6 +1,6 @@
 import { useQuery } from '@apollo/client';
-import React, { useState } from 'react';
-import {Text, View, StyleSheet, Image, FlatList, SafeAreaView, TouchableOpacity, Linking, ActivityIndicator} from 'react-native';
+import React, { useCallback, useState } from 'react';
+import {Text, View, StyleSheet, Image, FlatList, SafeAreaView, TouchableOpacity, Linking, ActivityIndicator, RefreshControl} from 'react-native';
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { TouchableHighlight } from 'react-native-gesture-handler';
 import { tw } from "react-native-tailwindcss";
@@ -18,12 +18,20 @@ import { useNavigation } from '@react-navigation/native';
 
 export default function List() {
     const navigation = useNavigation();
+    const [refreshing, setRefreshing] = useState(false);
 
-    const { loading, error, data } = useQuery(GET_FILES);
-    const { loading: loadingTags, error: errorTags, data: dataTags } = useQuery(
-        GET_TAGS
+    const { loading, error, data, fetchMore } = useQuery(GET_FILES,  {fetchPolicy: 'no-cache'});
+    const { loading: loadingTags, error: errorTags, data: dataTags, fetchMore: fetchMoreTags } = useQuery(
+        GET_TAGS, {fetchPolicy: 'no-cache'}
     );
     
+    const onRefresh = useCallback(async () => {
+        setRefreshing(true);
+        fetchMore({query: GET_FILES});
+        fetchMoreTags({query: GET_TAGS});
+        setRefreshing(false);
+    }, [refreshing]);
+
     const [
         displayTags,
         selectedTags,
@@ -100,11 +108,11 @@ export default function List() {
                 <AntDesign name="logout" size={25} color="white" onPress={logout}/>
             </View>
                 <View>
-                        <TouchableHighlight onPress={toggleOpen}  style={[tw.mR1, tw.w20, tw.selfEnd, tw.border2, tw.borderWhite, tw.rounded]} >
-                            <Text style={[tw.textWhite, tw.textCenter, tw.fontBold]}>Filtre</Text>
-                        </TouchableHighlight>
+                    <TouchableHighlight onPress={toggleOpen}  style={[tw.mR1, tw.w20, tw.selfEnd, tw.border2, tw.borderWhite, tw.rounded]} >
+                        <Text style={[tw.textWhite, tw.textCenter, tw.fontBold]}>Filtre</Text>
+                    </TouchableHighlight>
                 </View>
-        </View>
+            </View>
             <View style={[tw.absolute, tw.bottom0]}>
                 <MenuDrawer 
                 open={open} 
@@ -129,7 +137,15 @@ export default function List() {
                     data={data.files}
                     keyExtractor={item => item.id}
                     renderItem={renderItem}
-                    />
+                    refreshing={refreshing}
+                    onRefresh={onRefresh}
+                />
             )}
             </>
 )};
+
+const styles = StyleSheet.create({
+list: {
+    alignItems: 'flex-start', justifyContent: 'flex-start', flex: 1
+  },
+});
