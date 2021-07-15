@@ -1,7 +1,6 @@
 import { useQuery } from '@apollo/client';
 import React, { useCallback, useState } from 'react';
 import {Text, View, StyleSheet, Image, FlatList, SafeAreaView, TouchableOpacity, Linking, ActivityIndicator, RefreshControl} from 'react-native';
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { TouchableHighlight } from 'react-native-gesture-handler';
 import { tw } from "react-native-tailwindcss";
 import MenuDrawer from 'react-native-side-drawer';
@@ -20,17 +19,27 @@ export default function List() {
     const navigation = useNavigation();
     const [refreshing, setRefreshing] = useState(false);
 
-    const { loading, error, data, fetchMore } = useQuery(GET_FILES,  {fetchPolicy: 'no-cache'});
+    const { loading, error, data, fetchMore } = useQuery(GET_FILES,  {fetchPolicy:'network-only'});
     const { loading: loadingTags, error: errorTags, data: dataTags, fetchMore: fetchMoreTags } = useQuery(
         GET_TAGS, {fetchPolicy: 'no-cache'}
     );
-    
-    const onRefresh = useCallback(async () => {
-        setRefreshing(true);
-        fetchMore({query: GET_FILES});
-        fetchMoreTags({query: GET_TAGS});
-        setRefreshing(false);
-    }, [refreshing]);
+
+    const onRefresh = useCallback( async () => {
+      setRefreshing(true);
+      if(fetchMore !== undefined && fetchMoreTags !== undefined) {
+        try {
+              await fetchMoreTags({query: GET_TAGS});
+              await fetchMore({query: GET_FILES});
+              setRefreshing(false);
+            } catch (e) {
+                console.log(`Invocation error: ${e.message}`);
+                setRefreshing(false);
+            }
+        } else {
+            console.warn(`Fetch more is not available`);
+            setRefreshing(false);
+        }
+    }, [refreshing, fetchMore, fetchMoreTags]);
 
     const [
         displayTags,
@@ -38,8 +47,6 @@ export default function List() {
         tagSelection,
         isFileSelected,
     ] = useTagSelection(dataTags, loadingTags);
-
-    const Tab = createBottomTabNavigator();
 
     const [open, setOpen] = useState(false);
 
@@ -138,6 +145,7 @@ export default function List() {
                     keyExtractor={item => item.id}
                     renderItem={renderItem}
                     refreshing={refreshing}
+                    // onRefresh={onRefresh}
                     onRefresh={onRefresh}
                 />
             )}
